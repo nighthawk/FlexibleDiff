@@ -467,18 +467,14 @@ private enum DiffReference {
 private struct MovePath: Hashable {
 	let source: Int
 	let destination: Int
-
-	var hashValue: Int {
-		let sum = source + destination
-		return (sum * (sum + 1)) >> 1 + destination
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(source)
+		hasher.combine(destination)
 	}
 	
 	func shifted(by offset: Int) -> MovePath {
 		return MovePath(source: source + offset, destination: destination + offset)
-	}
-
-	static func == (left: MovePath, right: MovePath) -> Bool {
-		return left.source == right.source && left.destination == right.destination
 	}
 }
 
@@ -497,13 +493,10 @@ extension Set where Element == Int {
 }
 
 extension Changeset.Move: Hashable {
-	public var hashValue: Int {
-		let sum = source + destination
-		return (sum * (sum + 1)) >> 1 + destination
-	}
-
-	public static func == (left: Changeset.Move, right: Changeset.Move) -> Bool {
-		return left.isMutated == right.isMutated && left.source == right.source && left.destination == right.destination
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(source)
+		hasher.combine(destination)
+		hasher.combine(isMutated)
 	}
 }
 
