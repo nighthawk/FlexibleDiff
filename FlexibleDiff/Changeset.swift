@@ -467,12 +467,6 @@ private enum DiffReference {
 private struct MovePath: Hashable {
 	let source: Int
 	let destination: Int
-	
-	func hash(into hasher: inout Hasher) {
-		hasher.combine(source)
-		hasher.combine(destination)
-	}
-	
 	func shifted(by offset: Int) -> MovePath {
 		return MovePath(source: source + offset, destination: destination + offset)
 	}
